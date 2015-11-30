@@ -61,6 +61,14 @@ public final class ArrayUtil {
     }
 
     public static void print(int[] input) {
-
+        if (input == null || input.length == 0) {
+            return;
+        }
+        for (int element : input) {
+            System.out.print("| ");
+            System.out.print(element);
+            System.out.print(" ");
+        }
+        System.out.print("|");
     }
 }
