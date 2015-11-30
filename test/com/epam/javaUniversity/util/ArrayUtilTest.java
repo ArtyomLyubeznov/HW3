@@ -2,6 +2,8 @@ package com.epam.javaUniversity.util;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class ArrayUtilTest {
@@ -71,5 +73,37 @@ public class ArrayUtilTest {
     @Test
     public void testEqualsArraysHaveElementsInTheDifferentOrder() {
         assertTrue(ArrayUtil.equals(new int[]{1, 2, 3}, new int[]{2, 3, 1}));
+    }
+
+    @Test
+    public void testShuffleSourceArrayIsNull() {
+        assertArrayEquals(new int[]{}, ArrayUtil.shuffle(null));
+    }
+
+    @Test
+    public void testShuffleSourceArrayIsEmpty() {
+        assertArrayEquals(new int[]{}, ArrayUtil.shuffle(new int[]{}));
+    }
+
+    @Test
+    public void testShuffleNewArrayContainsOriginalElements() {
+        assertTrue(ArrayUtil.equals(new int[]{1, 2, 3, 4, 5}, ArrayUtil.shuffle(new int[]{1, 2, 3, 4, 5})));
+    }
+
+    @Test
+    public void testShuffleNewArrayNotEqualsToSourceArray() {
+        assertFalse(Arrays.equals(new int[]{1, 2, 3, 4, 5}, ArrayUtil.shuffle(new int[]{1, 2, 3, 4, 5})));
+    }
+
+    @Test
+    public void testShuffleNoElementIsOnAFormerPlace() {
+        int[] src = new int[100];
+        for (int i = 0; i < 100; i++) {
+            src[i] = i;
+        }
+        int[] res = ArrayUtil.shuffle(src);
+        for (int i = 0; i < 100; i++) {
+            assertNotEquals(src[i], res[i]);
+        }
     }
 }

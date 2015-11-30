@@ -1,6 +1,7 @@
 package com.epam.javaUniversity.util;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public final class ArrayUtil {
     private ArrayUtil() {
@@ -34,8 +35,8 @@ public final class ArrayUtil {
     }
 
     private static boolean matchElements(int[] first, int[] second) {
-        int[] firstSort = first.clone();
-        int[] secondSort = second.clone();
+        int[] firstSort = Arrays.copyOf(first, first.length);
+        int[] secondSort = Arrays.copyOf(second, second.length);
         Arrays.sort(firstSort);
         Arrays.sort(secondSort);
         if (Arrays.equals(firstSort, secondSort)) {
@@ -45,7 +46,18 @@ public final class ArrayUtil {
     }
 
     public static int[] shuffle(int[] input) {
-        return null;
+        if (input == null || input.length == 0) {
+            return new int[]{};
+        }
+        int[] output = Arrays.copyOf(input, input.length);
+        Random rand = new Random();
+        for (int i = output.length - 1; i > 0; i--) {
+            int pos = rand.nextInt(i);
+            int tmp = output[i];
+            output[i] = output[pos];
+            output[pos] = tmp;
+        }
+        return output;
     }
 
     public static void print(int[] input) {
