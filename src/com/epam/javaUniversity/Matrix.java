@@ -57,7 +57,7 @@ public class Matrix {
             throw new UnsupportedOperationException("Matrix must be square.");
         }
         Matrix res = new Matrix(this.height(), this.width());
-        for (int i = 0; i < res.matrix.length; i++) {
+        for (int i = 0; i < res.height(); i++) {
             res.matrix[i][i] = 1;
         }
         return res;
