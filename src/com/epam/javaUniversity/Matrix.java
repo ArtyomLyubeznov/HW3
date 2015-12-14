@@ -17,11 +17,10 @@ public class Matrix {
         if (other == null) {
             return false;
         }
-        if (other.matrix.length != this.matrix.length ||
-                other.matrix[0].length != this.matrix[0].length) {
+        if (hasDifferentSize(other)) {
             return false;
         }
-        for (int i = 0; i < this.matrix.length; i++) {
+        for (int i = 0; i < this.height(); i++) {
             if (!Arrays.equals(this.matrix[i], other.matrix[i])) {
                 return false;
             }
@@ -30,14 +29,14 @@ public class Matrix {
     }
 
     public boolean isZero() {
-        if (this.equals(new Matrix(this.matrix.length, this.matrix[0].length))) {
+        if (this.equals(new Matrix(this.height(), this.width()))) {
             return true;
         }
         return false;
     }
 
     public boolean isSquare() {
-        if (matrix.length == matrix[0].length) {
+        if (this.height() == this.width()) {
             return true;
         }
         return false;
@@ -57,7 +56,7 @@ public class Matrix {
         if (!this.isSquare()) {
             throw new UnsupportedOperationException("Matrix must be square.");
         }
-        Matrix res = new Matrix(this.matrix.length, this.matrix.length);
+        Matrix res = new Matrix(this.height(), this.width());
         for (int i = 0; i < res.matrix.length; i++) {
             res.matrix[i][i] = 1;
         }
@@ -67,7 +66,7 @@ public class Matrix {
     public int get(int row, int col) throws IllegalArgumentException {
         try {
             return matrix[row][col];
-        } catch (ArrayIndexOutOfBoundsException ex) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Specified position is beyond matrix.");
         }
     }
@@ -75,8 +74,37 @@ public class Matrix {
     public void set(int row, int col, int value) throws IllegalArgumentException {
         try {
             matrix[row][col] = value;
-        } catch (ArrayIndexOutOfBoundsException ex) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Specified position is beyond matrix.");
         }
+    }
+
+    public Matrix add(Matrix other) throws IllegalArgumentException {
+        if (other == null || hasDifferentSize(other)) {
+            throw new IllegalArgumentException("Invalid parameters of matrix.");
+        }
+        Matrix res = new Matrix(this.height(), this.width());
+        for (int row = 0; row < this.height(); row++) {
+            for (int col = 0; col < this.width(); col++) {
+                res.matrix[row][col] = this.matrix[row][col] + other.matrix[row][col];
+            }
+        }
+        return res;
+    }
+
+    private int height() {
+        return this.matrix.length;
+    }
+
+    private int width() {
+        return this.matrix[0].length;
+    }
+
+    private boolean hasDifferentSize(Matrix other) {
+        if (other.height() != this.height() ||
+                other.width() != this.width()) {
+            return true;
+        }
+        return false;
     }
 }
