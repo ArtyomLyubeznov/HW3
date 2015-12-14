@@ -72,7 +72,7 @@ public class MatrixTest {
 
     @Test
     public void testIsIdentityMatrixElementsAreCorrect() {
-        assertTrue(new Matrix(3,3).makeIdentity().isIdentity());
+        assertTrue(new Matrix(3, 3).makeIdentity().isIdentity());
     }
 
     @Test
@@ -89,6 +89,11 @@ public class MatrixTest {
         assertTrue(A.makeIdentity().equals(B));
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testMakeIdentityIncorrectMatrix() {
+        new Matrix(2, 3).makeIdentity();
+    }
+
     @Test
     public void testSetAndGet() {
         Matrix A = new Matrix(3, 3);
@@ -102,6 +107,16 @@ public class MatrixTest {
                 assertEquals(i + j, A.get(i, j));
             }
         }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetInvalidParameters() {
+        new Matrix(2, 2).set(2, 2, 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetInvalidParameters() {
+        new Matrix(2, 2).get(2, 2);
     }
 
     @Test

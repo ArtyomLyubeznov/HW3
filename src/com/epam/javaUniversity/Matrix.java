@@ -20,7 +20,7 @@ public class Matrix {
         if (hasDifferentSize(other)) {
             return false;
         }
-        for (int i = 0; i < this.height(); i++) {
+        for (int i = 0; i < this.getHeight(); i++) {
             if (!Arrays.equals(this.matrix[i], other.matrix[i])) {
                 return false;
             }
@@ -29,14 +29,14 @@ public class Matrix {
     }
 
     public boolean isZero() {
-        if (this.equals(new Matrix(this.height(), this.width()))) {
+        if (this.equals(new Matrix(this.getHeight(), this.getWidth()))) {
             return true;
         }
         return false;
     }
 
     public boolean isSquare() {
-        if (this.height() == this.width()) {
+        if (this.getHeight() == this.getWidth()) {
             return true;
         }
         return false;
@@ -56,8 +56,8 @@ public class Matrix {
         if (!this.isSquare()) {
             throw new UnsupportedOperationException("Matrix must be square.");
         }
-        Matrix res = new Matrix(this.height(), this.width());
-        for (int i = 0; i < res.height(); i++) {
+        Matrix res = new Matrix(this.getHeight(), this.getWidth());
+        for (int i = 0; i < res.getHeight(); i++) {
             res.matrix[i][i] = 1;
         }
         return res;
@@ -83,26 +83,26 @@ public class Matrix {
         if (other == null || hasDifferentSize(other)) {
             throw new IllegalArgumentException("Invalid parameters of matrix.");
         }
-        Matrix res = new Matrix(this.height(), this.width());
-        for (int row = 0; row < this.height(); row++) {
-            for (int col = 0; col < this.width(); col++) {
+        Matrix res = new Matrix(this.getHeight(), this.getWidth());
+        for (int row = 0; row < this.getHeight(); row++) {
+            for (int col = 0; col < this.getWidth(); col++) {
                 res.matrix[row][col] = this.matrix[row][col] + other.matrix[row][col];
             }
         }
         return res;
     }
 
-    private int height() {
+    public int getHeight() {
         return this.matrix.length;
     }
 
-    private int width() {
+    public int getWidth() {
         return this.matrix[0].length;
     }
 
     private boolean hasDifferentSize(Matrix other) {
-        if (other.height() != this.height() ||
-                other.width() != this.width()) {
+        if (other.getHeight() != this.getHeight() ||
+                other.getWidth() != this.getWidth()) {
             return true;
         }
         return false;
