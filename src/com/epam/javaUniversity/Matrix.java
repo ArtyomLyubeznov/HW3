@@ -20,7 +20,7 @@ public class Matrix {
         if (hasDifferentSize(other)) {
             return false;
         }
-        for (int i = 0; i < this.getHeight(); i++) {
+        for (int i = 0; i < this.getRows(); i++) {
             if (!Arrays.equals(this.matrix[i], other.matrix[i])) {
                 return false;
             }
@@ -29,14 +29,14 @@ public class Matrix {
     }
 
     public boolean isZero() {
-        if (this.equals(new Matrix(this.getHeight(), this.getWidth()))) {
+        if (this.equals(new Matrix(this.getRows(), this.getCols()))) {
             return true;
         }
         return false;
     }
 
     public boolean isSquare() {
-        if (this.getHeight() == this.getWidth()) {
+        if (this.getRows() == this.getCols()) {
             return true;
         }
         return false;
@@ -56,14 +56,14 @@ public class Matrix {
         if (!this.isSquare()) {
             throw new UnsupportedOperationException("Matrix must be square.");
         }
-        Matrix res = new Matrix(this.getHeight(), this.getWidth());
-        for (int i = 0; i < res.getHeight(); i++) {
+        Matrix res = new Matrix(this.getRows(), this.getCols());
+        for (int i = 0; i < res.getRows(); i++) {
             res.matrix[i][i] = 1;
         }
         return res;
     }
 
-    public int get(int row, int col) throws IllegalArgumentException {
+    public int getElement(int row, int col) throws IllegalArgumentException {
         try {
             return matrix[row][col];
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -71,7 +71,7 @@ public class Matrix {
         }
     }
 
-    public void set(int row, int col, int value) throws IllegalArgumentException {
+    public void setElement(int row, int col, int value) throws IllegalArgumentException {
         try {
             matrix[row][col] = value;
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -83,26 +83,51 @@ public class Matrix {
         if (other == null || hasDifferentSize(other)) {
             throw new IllegalArgumentException("Invalid parameters of matrix.");
         }
-        Matrix res = new Matrix(this.getHeight(), this.getWidth());
-        for (int row = 0; row < this.getHeight(); row++) {
-            for (int col = 0; col < this.getWidth(); col++) {
+        Matrix res = new Matrix(this.getRows(), this.getCols());
+        for (int row = 0; row < this.getRows(); row++) {
+            for (int col = 0; col < this.getCols(); col++) {
                 res.matrix[row][col] = this.matrix[row][col] + other.matrix[row][col];
             }
         }
         return res;
     }
 
-    public int getHeight() {
+    public int getRows() {
         return this.matrix.length;
     }
 
-    public int getWidth() {
+    public int getCols() {
         return this.matrix[0].length;
     }
 
     private boolean hasDifferentSize(Matrix other) {
-        if (other.getHeight() != this.getHeight() ||
-                other.getWidth() != this.getWidth()) {
+        if (other.getRows() != this.getRows() ||
+                other.getCols() != this.getCols()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Matrix multiply(Matrix other) {
+        if (other == null || this.hasInappropriateSize(other)) {
+            throw new IllegalArgumentException("Invalid parameters of matrix.");
+        }
+        if (other.isZero()) {
+            return new Matrix(this.getRows(), other.getCols());
+        }
+        Matrix res = new Matrix(this.getRows(), other.getCols());
+        for (int row = 0; row < res.getRows(); row++) {
+            for (int col = 0; col < res.getCols(); col++) {
+                for (int i = 0; i < this.getCols(); i++) {
+                    res.matrix[row][col] += this.matrix[row][i] * other.matrix[i][col];
+                }
+            }
+        }
+        return res;
+    }
+
+    private boolean hasInappropriateSize(Matrix other) {
+        if (this.getCols() != other.getRows()) {
             return true;
         }
         return false;
