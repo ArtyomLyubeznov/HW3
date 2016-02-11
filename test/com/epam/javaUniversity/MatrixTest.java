@@ -27,8 +27,10 @@ public class MatrixTest {
     public void testEqualsMatricesHaveIdenticalElements() {
         Matrix A = new Matrix(2, 2);
         A.setElement(0, 0, 7);
-        Matrix B = new Matrix(2, 2);
-        B.setElement(0, 0, 7);
+        Matrix B = new Matrix(new int[][]{
+                {7, 0},
+                {0, 0}
+        });
         assertTrue(A.equals(B));
     }
 
@@ -148,5 +150,59 @@ public class MatrixTest {
         C.setElement(1, 1, 4);
         assertTrue(C.equals(A.add(B)));
     }
-    /* this == null ?!*/
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testMultiplyInputMatrixIsNull() {
+        new Matrix(3, 3).multiply(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testMultiplyInputMatrixIsIncorrect() {
+        new Matrix(2, 3).multiply(new Matrix(2, 4));
+    }
+
+    @Test
+    public void testMultiply() {
+        Matrix A = new Matrix(2, 3);
+        A.setElement(0, 0, 1);
+        A.setElement(0, 1, 2);
+        A.setElement(0, 2, 3);
+        A.setElement(1, 0, 4);
+        A.setElement(1, 1, 5);
+        A.setElement(1, 2, 6);
+        Matrix B = new Matrix(3, 4);
+        B.setElement(0, 0, 12);
+        B.setElement(0, 1, 11);
+        B.setElement(0, 2, 10);
+        B.setElement(0, 3, 9);
+        B.setElement(1, 0, 8);
+        B.setElement(1, 1, 7);
+        B.setElement(1, 2, 6);
+        B.setElement(1, 3, 5);
+        B.setElement(2, 0, 4);
+        B.setElement(2, 1, 3);
+        B.setElement(2, 2, 2);
+        B.setElement(2, 3, 1);
+        Matrix C = new Matrix(2, 4);
+        C.setElement(0, 0, 40);
+        C.setElement(0, 1, 34);
+        C.setElement(0, 2, 28);
+        C.setElement(0, 3, 22);
+        C.setElement(1, 0, 112);
+        C.setElement(1, 1, 97);
+        C.setElement(1, 2, 82);
+        C.setElement(1, 3, 67);
+        assertTrue(C.equals(A.multiply(B)));
+    }
+
+    @Test
+    public void testGetDeterminant() {
+        Matrix A = new Matrix(new int[][]{
+                {1, 2, 0, 1},
+                {3, 1, 2, 2},
+                {0, 4, 1, 2},
+                {3, 2, 1, 0},
+        });
+        assertEquals(25, A.getDeterminant());
+    }
 }
